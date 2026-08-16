@@ -349,4 +349,21 @@ Queue identified as from this daemon by doing the equivalent of
 "lpadmin -p printer -o cups-browsed-default", this generates a
 "cups-browsed" attribute in printers.conf with value "true".
 
+## Static Analysis
 
+cups-browsed runs cppcheck (`.github/workflows/cppcheck.yml`) and CodeQL (`.github/workflows/static-analysis.yml`) on every push and pull request.
+
+### CodeQL Static Analysis Configuration
+
+This repository uses a custom GitHub Actions workflow for CodeQL static analysis located at `.github/workflows/static-analysis.yml`. To ensure accurate analysis and avoid conflicts with GitHub's default settings, the following repository configurations are required:
+
+1. **Enable Advanced Setup**:
+   - Go to **Settings** -> **Code security and analysis**.
+   - Under **Code scanning**, locate **CodeQL analysis**.
+   - If "Default" is enabled, click the three dots (...) and select **Switch to advanced**.
+2. **Disable Default Setup**:
+   - The "Default" setup must be disabled for the custom workflow to upload results successfully.
+3. **Custom Workflow Dependencies**:
+   - Our custom workflow is designed to install specific project dependencies and perform a manual build before the analysis. This ensures that CodeQL has a complete build graph for the C sources in this repository.
+
+*Note: If the Default setup is active, GitHub may reject the results uploaded by the manual workflow, causing the CI job to fail.*
